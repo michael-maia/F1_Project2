@@ -15,13 +15,13 @@ namespace F1_Project.Models
         public DateTime YearFirstRace { get; set; }
         public DateTime LapRecord { get; set; }
         public string Description { get; set; }
+        public string Photo { get; set; }
 
         // Chaves estrangeiras
-        public int DriverId { get; set; }
-        public Driver DriverMostWins { get; set; }
-        public int TeamId { get; set; }
-        public Team TeamMostWins { get; set; }
         public ICollection<Round> Rounds { get; set; }
-        // PROPRIEDADES PARA LISTA DE FOTOS
+        //public int DriverId { get; set; }
+        //public Driver DriverMostWins { get; set; }
+        //public int TeamId { get; set; }
+        //public Team TeamMostWins { get; set; }   
     }
 }

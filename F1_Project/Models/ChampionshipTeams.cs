@@ -12,6 +12,7 @@ namespace F1_Project.Models
         // Chaves estrangeiras
         public int ChampionshipId { get; set; }
         public Championship Championship { get; set; }
+
         public int TeamId { get; set; }
         public Team Team { get; set; }
     }

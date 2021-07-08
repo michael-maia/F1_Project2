@@ -12,7 +12,6 @@ namespace F1_Project.Models
 
         // Chaves estrangeiras
         public ICollection<ChampionshipTeams> ChampionshipTeams { get; set; }
-        public int RoundId { get; set; }
-        public Round Round { get; set; }
+        public ICollection<Round> Rounds { get; set; }       
     }
 }

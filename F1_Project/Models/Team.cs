@@ -14,10 +14,10 @@ namespace F1_Project.Models
         public int TeamsChampionshipsVictories { get; set; }
         public int DriversChampionshipsVictories { get; set; }
         public string Description { get; set; }
+        public string Photo { get; set; }
 
         // Chaves estrangeiras
-        public ICollection<DriverTeams> DriverTeams12 { get; set; }
-
-        // PROPRIEDADE LISTA FOTOS
+        public ICollection<DriverTeams> DriverTeams { get; set; }
+        public ICollection<ChampionshipTeams> ChampionshipTeams { get; set; }
     }
 }
