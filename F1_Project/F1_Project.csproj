@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20210709005522_Circuit_YearFirstRace-Int32.cs" />
+    <Compile Remove="Migrations\20210709005522_Circuit_YearFirstRace-Int32.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="ViewModel\" />
   </ItemGroup>
 
