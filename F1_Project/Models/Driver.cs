@@ -18,6 +18,6 @@ namespace F1_Project.Models
         public string Photo { get; set; }
 
         // Chaves estrangeiras
-        public ICollection<DriverTeams> DriverTeams { get; set; }
+        public ICollection<DriverTeam> DriverTeams { get; set; }
     }
 }

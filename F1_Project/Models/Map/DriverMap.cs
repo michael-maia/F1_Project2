@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace F1_Project.Models.Map
 {
-    public class DriversMap : IEntityTypeConfiguration<Driver>
+    public class DriverMap : IEntityTypeConfiguration<Driver>
     {
         public void Configure(EntityTypeBuilder<Driver> builder)
         {

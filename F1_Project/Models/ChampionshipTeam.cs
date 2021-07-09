@@ -5,17 +5,15 @@ using System.Threading.Tasks;
 
 namespace F1_Project.Models
 {
-    public class DriverTeams
+    public class ChampionshipTeam
     {
         public int Id { get; set; }
-        public int InitialYear { get; set; }
-        public int FinalYear { get; set; }
 
         // Chaves estrangeiras
-        public int DriverId { get; set; }
-        public Driver Driver { get; set; }
+        public int ChampionshipId { get; set; }
+        public Championship Championship { get; set; }
 
         public int TeamId { get; set; }
-        public Team Team { get; set; }        
+        public Team Team { get; set; }
     }
 }
