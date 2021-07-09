@@ -13,13 +13,13 @@ namespace F1_Project.Controllers
     public class DriversController : Controller
     {
         private readonly DBContext _context;
+        private readonly DriverTeam _driverTeam;
 
-        public DriversController(DBContext context)
+        public DriversController(DBContext context, DriverTeam driverTeam)
         {
             _context = context;
-        }
-
-        public IList<Driver> Drivers { get; set; }        
+            _driverTeam = driverTeam;
+        }               
 
         // GET: Drivers
         public async Task<IActionResult> Index()

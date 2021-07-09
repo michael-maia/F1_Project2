@@ -10,10 +10,10 @@ namespace F1_Project.Models.Map
     public class ChampionshipTeamMap : IEntityTypeConfiguration<ChampionshipTeam>
     {
         public void Configure(EntityTypeBuilder<ChampionshipTeam> builder)
-        {
-            builder.HasKey(dt => new { dt.ChampionshipId, dt.TeamId });
-            builder.HasOne(dt => dt.Championship).WithMany(dt => dt.ChampionshipTeams).HasForeignKey(dt => dt.ChampionshipId);
-            builder.HasOne(dt => dt.Team).WithMany(dt => dt.ChampionshipTeams).HasForeignKey(dt => dt.TeamId);
+        {            
+            builder.HasKey(ct => new { ct.ChampionshipId, ct.TeamId });
+            builder.HasOne(ct => ct.Championship).WithMany(ct => ct.ChampionshipTeams).HasForeignKey(ct => ct.ChampionshipId);
+            builder.HasOne(ct => ct.Team).WithMany(ct => ct.ChampionshipTeams).HasForeignKey(ct => ct.TeamId);
         }
     }
 }

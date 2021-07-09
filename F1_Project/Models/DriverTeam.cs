@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,7 +10,7 @@ namespace F1_Project.Models
     public class DriverTeam
     {
         public int Id { get; set; }
-        public int InitialYear { get; set; }
+        public int InitialYear { get; set; }        
         public int FinalYear { get; set; }
 
         // Chaves estrangeiras
