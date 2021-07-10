@@ -4,59 +4,58 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>Circuit</h4>
+    <h4>@Html.DisplayFor(model => model.FullName)</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FullName)
+        <dt class="col-sm-2">
+            Races Held
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NumberRacesHeld)
-        </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.NumberRacesHeld)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CircuitLength)
+        <dt class="col-sm-2">
+            Circuit Length
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CircuitLength)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CircuitLength) km
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NumberLaps)
+        <dt class="col-sm-2">
+            Number Laps
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NumberLaps)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumberLaps) laps
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.YearFirstRace)
+        <dt class="col-sm-2">
+            Year First Race
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.YearFirstRace)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.YearFirstRace.Year)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LapRecord)
+        <dt class="col-sm-2">
+            Lap Record
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LapRecord)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Photo)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Photo)
+        <dd class="col-sm-10">
+            @if (Model.Photo != null)
+            {
+                <img src="@Url.Content(Model.Photo)" name="file" id="file" height="100" width="100" class="border border-secondary rounded" />
+            }
+            else
+            {
+                <img src="#" name="file" id="file" height="100" width="100" class="border border-secondary rounded" />
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
 </div>

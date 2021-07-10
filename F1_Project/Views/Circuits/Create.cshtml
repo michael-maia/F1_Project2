@@ -4,42 +4,40 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Circuit</h4>
+<h4>Add new Circuit</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
+                <label asp-for="FullName" class="control-label">Name</label>
                 <input asp-for="FullName" class="form-control" />
                 <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NumberRacesHeld" class="control-label"></label>
+                <label asp-for="NumberRacesHeld" class="control-label">Races Held</label>
                 <input asp-for="NumberRacesHeld" class="form-control" />
                 <span asp-validation-for="NumberRacesHeld" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CircuitLength" class="control-label"></label>
+                <label asp-for="CircuitLength" class="control-label">Circuit Length</label>
                 <input asp-for="CircuitLength" class="form-control" />
                 <span asp-validation-for="CircuitLength" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NumberLaps" class="control-label"></label>
+                <label asp-for="NumberLaps" class="control-label">Number Laps</label>
                 <input asp-for="NumberLaps" class="form-control" />
                 <span asp-validation-for="NumberLaps" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="YearFirstRace" class="control-label"></label>
+                <label asp-for="YearFirstRace" class="control-label">First Race</label>
                 <input asp-for="YearFirstRace" class="form-control" />
                 <span asp-validation-for="YearFirstRace" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LapRecord" class="control-label"></label>
-                <input asp-for="LapRecord" class="form-control" />
+                <label asp-for="LapRecord" class="control-label">Lap Record</label>
+                <input asp-for="LapRecord" type="time" class="form-control" />
                 <span asp-validation-for="LapRecord" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -48,21 +46,32 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <img src="#" name="file" id="file" height="160" width="240" class="border border-secondary rounded" />
+            </div>
+            <div class="form-group">
                 <label asp-for="Photo" class="control-label"></label>
-                <input asp-for="Photo" class="form-control" />
+                <input asp-for="Photo" type="file" class="form-control" name="file" id="file" onchange="LoadImage(this)" />
                 <span asp-validation-for="Photo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">Back to List</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    function LoadImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#file").attr('src', e.target.result).width(260).height(240);
+            }
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+</script>
 }

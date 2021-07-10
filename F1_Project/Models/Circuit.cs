@@ -15,9 +15,8 @@ namespace F1_Project.Models
         public int NumberLaps { get; set; }
         [DataType(DataType.Date)]
         public DateTime YearFirstRace { get; set; }
-
-        [DataType(DataType.Time)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0: mm:ss.fff}")]
+        
+        [DisplayFormat(DataFormatString = "{0:mm:ss.fff}", ApplyFormatInEditMode = true)]
         public DateTime LapRecord { get; set; }
         public string Description { get; set; }
         public string Photo { get; set; }

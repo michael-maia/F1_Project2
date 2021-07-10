@@ -38,7 +38,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="RaceVictories" class="control-label">Nº of Race Victories</label>
-                <input asp-for="RaceVictories" class="form-control" value="0"/>
+                <input asp-for="RaceVictories" class="form-control" value="0" />
                 <span asp-validation-for="RaceVictories" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -47,12 +47,12 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <img src="#" name="file" id="file" height="160" width="240" class="border border-secondary rounded" />
-            </div>
-            <div class="form-group">
                 <label asp-for="Photo" class="control-label"></label>
                 <input asp-for="Photo" type="file" class="form-control" name="file" id="file" onchange="LoadImage(this)" />
                 <span asp-validation-for="Photo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <img src="#" name="file" id="file" height="160" width="240" class="border border-secondary rounded" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Add" class="btn btn-primary" />

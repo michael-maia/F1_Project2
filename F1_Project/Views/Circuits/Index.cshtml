@@ -1,41 +1,32 @@
 ﻿@model IEnumerable<F1_Project.Models.Circuit>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Circuits List";
 }
 
-<h1>Index</h1>
+<h3>Circuits List</h3>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-info">Add new Circuit</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FullName)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumberRacesHeld)
+                Races Held
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CircuitLength)
+                Circuit Length
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumberLaps)
-            </th>
+                Number Laps
+            </th>            
             <th>
-                @Html.DisplayNameFor(model => model.YearFirstRace)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LapRecord)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Photo)
-            </th>
+                Lap Record
+            </th>            
             <th></th>
         </tr>
     </thead>
@@ -49,22 +40,13 @@
                 @Html.DisplayFor(modelItem => item.NumberRacesHeld)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CircuitLength)
+                @Html.DisplayFor(modelItem => item.CircuitLength) km
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NumberLaps)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.YearFirstRace)
-            </td>
+            </td>  
             <td>
                 @Html.DisplayFor(modelItem => item.LapRecord)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Photo)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
