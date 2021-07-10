@@ -131,9 +131,9 @@ namespace F1_Project.Controllers
         }
 
         // GET: DriverTeams/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? driverId, int? teamId)
         {
-            if (id == null)
+            if (driverId == null || teamId == null)
             {
                 return NotFound();
             }
@@ -141,7 +141,7 @@ namespace F1_Project.Controllers
             var driverTeam = await _context.DriverTeams
                 .Include(d => d.Driver)
                 .Include(d => d.Team)
-                .FirstOrDefaultAsync(m => m.DriverId == id);
+                .FirstOrDefaultAsync(m => m.DriverId == driverId && m.TeamId == teamId);
             if (driverTeam == null)
             {
                 return NotFound();
@@ -153,9 +153,9 @@ namespace F1_Project.Controllers
         // POST: DriverTeams/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int driverId, int teamId)
         {
-            var driverTeam = await _context.DriverTeams.FindAsync(id);
+            var driverTeam = await _context.DriverTeams.FindAsync(driverId, teamId);
             _context.DriverTeams.Remove(driverTeam);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
