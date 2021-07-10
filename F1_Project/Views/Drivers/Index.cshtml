@@ -1,7 +1,7 @@
-﻿@model IEnumerable<F1_Project.Models.Driver>
+﻿@model F1_Project.Models.ViewModel.DriverIndexData
 
 @{
-    ViewData["Title"] = "Index";    
+    ViewData["Title"] = "F1 Drivers";    
 }
 
 <h1>Index</h1>
@@ -13,29 +13,11 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FullName)
+                Full Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nationality)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BirthDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CarNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ChampionshipsVictories)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RaceVictories)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Photo)
-            </th>
+                Nationality
+            </th>                     
             <th>
                 Team
             </th>
@@ -43,34 +25,26 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+    @foreach (var item in Model.Drivers)
+    {
+        string selectedRow = "";
+        if(item.Id == (int?)ViewData["DriverId"])
+        {
+            selectedRow = "table-sucess";
+        }
+
+        <tr class="@selectedRow">
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Nationality)
-            </td>
+            </td>                        
             <td>
-                @Html.DisplayFor(modelItem => item.BirthDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CarNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChampionshipsVictories)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RaceVictories)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Photo)
-            </td>
-            <td>
-                @ViewData["Team"]
+                @foreach(var team in item.DriverTeams)
+                {
+                    @team.Team.FullName;
+                }                
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

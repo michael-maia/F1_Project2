@@ -7,24 +7,41 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using F1_Project.Data;
 using F1_Project.Models;
+using F1_Project.Models.ViewModel;
 
 namespace F1_Project.Controllers
 {
     public class DriversController : Controller
     {
-        private readonly DBContext _context;
-        private readonly DriverTeam _driverTeam;
+        private readonly DBContext _context;        
 
-        public DriversController(DBContext context, DriverTeam driverTeam)
+        public DriversController(DBContext context)
         {
-            _context = context;
-            _driverTeam = driverTeam;
+            _context = context;            
         }               
 
         // GET: Drivers
-        public async Task<IActionResult> Index()
-        {            
-            return View(await _context.Drivers.ToListAsync());
+        /*public async Task<IActionResult> Index()
+        {
+            var select = _context.Drivers.Include(d => d.DriverTeams).Where()
+            return View(await _context.Drivers.Include(d => d.DriverTeams).ToListAsync());
+        }*/
+        public async Task<IActionResult> Index(int? id)
+        {
+            var viewModel = new DriverIndexData();
+            viewModel.Drivers = await _context.Drivers
+                .Include(d => d.DriverTeams)
+                    .ThenInclude(d => d.Team)
+                .AsNoTracking().OrderBy(d => d.FullName).ToListAsync();
+
+            if(id != null)
+            {
+                ViewData["DriverId"] = id.Value;                
+                Driver driver = viewModel.Drivers.Where(d => d.Id == id.Value).Single();
+                viewModel.Teams = driver.DriverTeams.Select(d => d.Team);
+            }
+
+            return View(viewModel);
         }
 
         // GET: Drivers/Details/5
