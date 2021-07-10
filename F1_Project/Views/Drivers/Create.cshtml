@@ -5,9 +5,7 @@
     
 }
 
-<h1>Create</h1>
-
-<h4>Driver</h4>
+<h4>New Driver</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -35,12 +33,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="ChampionshipsVictories" class="control-label">Nº of Titles</label>
-                <input asp-for="ChampionshipsVictories" class="form-control" />
+                <input asp-for="ChampionshipsVictories" class="form-control" value="0" />
                 <span asp-validation-for="ChampionshipsVictories" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="RaceVictories" class="control-label">Nº of Race Victories</label>
-                <input asp-for="RaceVictories" class="form-control" />
+                <input asp-for="RaceVictories" class="form-control" value="0"/>
                 <span asp-validation-for="RaceVictories" class="text-danger"></span>
             </div>
             <div class="form-group">

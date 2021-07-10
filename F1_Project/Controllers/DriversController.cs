@@ -38,7 +38,7 @@ namespace F1_Project.Controllers
             {
                 ViewData["DriverId"] = id.Value;                
                 Driver driver = viewModel.Drivers.Where(d => d.Id == id.Value).Single();
-                viewModel.Teams = driver.DriverTeams.Where(d => d.FinalYear == 2021).Select(d => d.Team);
+                viewModel.Teams = driver.DriverTeams.Select(d => d.Team);
             }
 
             return View(viewModel);
@@ -125,7 +125,7 @@ namespace F1_Project.Controllers
                 return NotFound();
             }
 
-            driver.Photo = TempData["DriverPhoto"].ToString();
+           // driver.Photo = TempData["DriverPhoto"].ToString();
 
             if (ModelState.IsValid)
             {

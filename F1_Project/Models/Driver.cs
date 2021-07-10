@@ -19,14 +19,14 @@ namespace F1_Project.Models
 
         [Required(ErrorMessage = "This field can't be empty")]
         [DataType(DataType.Date)]
-        public DateTime BirthDate { get; set; }        
-        public int CarNumber { get; set; }
-
-        [DefaultValue(0)]
+        public DateTime BirthDate { get; set; }     
+        
+        [Required(ErrorMessage = "This field can't be empty")]
         public int ChampionshipsVictories { get; set; }
-
-        [DefaultValue(0)]
+        
+        [Required(ErrorMessage = "This field can't be empty")]
         public int RaceVictories { get; set; }
+        public int CarNumber { get; set; }
         public string Description { get; set; }
         public string Photo { get; set; }
 

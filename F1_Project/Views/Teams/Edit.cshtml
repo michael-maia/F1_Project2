@@ -10,9 +10,8 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger">Full Name</div>
             <div class="form-group">
                 <label asp-for="FullName" class="control-label"></label>
                 <input asp-for="FullName" class="form-control" />
@@ -24,18 +23,18 @@
                 <span asp-validation-for="Nationality" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RaceVictories" class="control-label"></label>
-                <input asp-for="RaceVictories" class="form-control" />
+                <label asp-for="RaceVictories" class="control-label">Race Victories</label>
+                <input asp-for="RaceVictories" class="form-control" value="0" />
                 <span asp-validation-for="RaceVictories" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TeamsChampionshipsVictories" class="control-label"></label>
-                <input asp-for="TeamsChampionshipsVictories" class="form-control" />
+                <label asp-for="TeamsChampionshipsVictories" class="control-label">Constructor Victories</label>
+                <input asp-for="TeamsChampionshipsVictories" class="form-control" value="0" />
                 <span asp-validation-for="TeamsChampionshipsVictories" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DriversChampionshipsVictories" class="control-label"></label>
-                <input asp-for="DriversChampionshipsVictories" class="form-control" />
+                <label asp-for="DriversChampionshipsVictories" class="control-label">Driver Championships</label>
+                <input asp-for="DriversChampionshipsVictories" class="form-control" value="0" />
                 <span asp-validation-for="DriversChampionshipsVictories" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -44,12 +43,15 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <img src="#" name="file" id="file" height="160" width="240" class="border border-secondary rounded" />
+            </div>
+            <div class="form-group">
                 <label asp-for="Photo" class="control-label"></label>
-                <input asp-for="Photo" class="form-control" />
+                <input asp-for="Photo" type="file" class="form-control" name="file" id="file" onchange="LoadImage(this)" />
                 <span asp-validation-for="Photo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Update" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -61,4 +63,15 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    function LoadImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#file").attr('src', e.target.result).width(160).height(240);
+            }
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+</script>
 }

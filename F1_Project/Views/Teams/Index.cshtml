@@ -1,69 +1,53 @@
-﻿@model IEnumerable<F1_Project.Models.Team>
+﻿@model F1_Project.Models.ViewModel.DriverIndexData
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "F1 Teams";
 }
 
-<h1>Index</h1>
+<h1>F1 Teams</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-info">Add new Team</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FullName)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nationality)
-            </th>
+                Nationality
+            </th>      
             <th>
-                @Html.DisplayNameFor(model => model.RaceVictories)
+                Drivers
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TeamsChampionshipsVictories)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DriversChampionshipsVictories)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Photo)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+@foreach (var item in Model.Teams) 
+{
+    string selectedRow = "";
+    if (item.Id == (int?)ViewData["TeamId"])
+    {
+        selectedRow = "table-sucess";
+    }
+        <tr class="@selectedRow">
             <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
+                <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.FullName)</a>
+            </td>                        
             <td>
                 @Html.DisplayFor(modelItem => item.Nationality)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RaceVictories)
-            </td>
+                @foreach (var driver in item.DriverTeams)
+                {
+                    @driver.Driver.FullName;
+                    @:&#47;
+                }
+            </td>            
             <td>
-                @Html.DisplayFor(modelItem => item.TeamsChampionshipsVictories)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DriversChampionshipsVictories)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Photo)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
             </td>
         </tr>
 }

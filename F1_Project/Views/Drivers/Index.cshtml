@@ -39,11 +39,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Nationality)
             </td>                        
-            <td>
-                @foreach(var team in item.DriverTeams)
+            <td>                
+                @foreach (var team in item.DriverTeams)
                 {
                     @team.Team.FullName;                    
-                }                
+                    @:&#47;
+                }
             </td>
             <td>
                 <a asp-controller="DriverTeams" asp-action="Create" asp-route-driverid="@item.Id" class="btn btn-success">Add Team</a>

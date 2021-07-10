@@ -7,22 +7,40 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using F1_Project.Data;
 using F1_Project.Models;
+using Microsoft.AspNetCore.Hosting;
+using F1_Project.Models.ViewModel;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace F1_Project.Controllers
 {
     public class TeamsController : Controller
     {
         private readonly DBContext _context;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public TeamsController(DBContext context)
+        public TeamsController(DBContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            _hostEnvironment = hostEnvironment;
         }
 
-        // GET: Teams
-        public async Task<IActionResult> Index()
+        // Explicit Loading => https://docs.microsoft.com/en-us/aspnet/core/data/ef-mvc/read-related-data?view=aspnetcore-5.0#about-explicit-loading
+        public async Task<IActionResult> Index(int? id)
         {
-            return View(await _context.Teams.ToListAsync());
+            var viewModel = new DriverIndexData();
+            viewModel.Teams = await _context.Teams
+                .Include(d => d.DriverTeams)
+                    .ThenInclude(d => d.Driver)
+                .AsNoTracking().OrderBy(d => d.FullName).ToListAsync();
+
+            if (id != null)
+            {
+                ViewData["TeamId"] = id.Value;
+                Team team = viewModel.Teams.Where(d => d.Id == id.Value).Single();
+                viewModel.Drivers = team.DriverTeams.Select(d => d.Driver);
+            }
+            return View(viewModel);
         }
 
         // GET: Teams/Details/5
@@ -54,10 +72,20 @@ namespace F1_Project.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FullName,Nationality,RaceVictories,TeamsChampionshipsVictories,DriversChampionshipsVictories,Description,Photo")] Team team)
+        public async Task<IActionResult> Create([Bind("Id,FullName,Nationality,RaceVictories,TeamsChampionshipsVictories,DriversChampionshipsVictories,Description,Photo")] Team team, IFormFile file)
         {
             if (ModelState.IsValid)
             {
+                if(file != null)
+                {
+                    var linkUpload = Path.Combine(_hostEnvironment.WebRootPath, "Images");
+
+                    using (FileStream fileStream = new FileStream(Path.Combine(linkUpload, file.FileName), FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                        team.Photo = "~/Images/" + file.FileName;
+                    }
+                }
                 _context.Add(team);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -78,6 +106,8 @@ namespace F1_Project.Controllers
             {
                 return NotFound();
             }
+
+            TempData["TeamPhoto"] = team.Photo;
             return View(team);
         }
 
@@ -86,7 +116,7 @@ namespace F1_Project.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Nationality,RaceVictories,TeamsChampionshipsVictories,DriversChampionshipsVictories,Description,Photo")] Team team)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Nationality,RaceVictories,TeamsChampionshipsVictories,DriversChampionshipsVictories,Description,Photo")] Team team, IFormFile file)
         {
             if (id != team.Id)
             {
@@ -95,6 +125,21 @@ namespace F1_Project.Controllers
 
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    var linkUpload = Path.Combine(_hostEnvironment.WebRootPath, "Images");
+
+                    using (FileStream fileStream = new FileStream(Path.Combine(linkUpload, file.FileName), FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                        team.Photo = "~/Images/" + file.FileName;
+                    }
+                }
+                else
+                {
+                    team.Photo = TempData["TeamPhoto"].ToString();
+                }
+
                 try
                 {
                     _context.Update(team);
@@ -140,6 +185,14 @@ namespace F1_Project.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var team = await _context.Teams.FindAsync(id);
+
+            string teamPhoto = team.Photo;
+            if (team.Photo != null)
+            {
+                teamPhoto = teamPhoto.Replace("~", "wwwroot");
+                System.IO.File.Delete(teamPhoto);
+            }
+
             _context.Teams.Remove(team);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
