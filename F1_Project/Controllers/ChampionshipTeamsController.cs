@@ -49,7 +49,7 @@ namespace F1_Project.Controllers
         // GET: ChampionshipTeams/Create
         public IActionResult Create()
         {
-            ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Id");
+            ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Year");
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "FullName");
             return View();
         }
@@ -73,30 +73,26 @@ namespace F1_Project.Controllers
         }
 
         // GET: ChampionshipTeams/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? championshipId, int? teamId)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            ChampionshipTeam championshipTeamTemp = _context.ChampionshipTeams.Find(championshipId, teamId);
 
-            var championshipTeam = await _context.ChampionshipTeams.FindAsync(id);
-            if (championshipTeam == null)
+            if (championshipTeamTemp == null)
             {
                 return NotFound();
             }
-            ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Id", championshipTeam.ChampionshipId);
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "FullName", championshipTeam.TeamId);
-            return View(championshipTeam);
+            
+            ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Year", championshipTeamTemp.ChampionshipId);
+            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "FullName", championshipTeamTemp.TeamId);
+            return View(championshipTeamTemp);
         }
-
-        // POST: ChampionshipTeams/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ChampionshipId,TeamId")] ChampionshipTeam championshipTeam)
+        public IActionResult Edit(int id, [Bind("Id,ChampionshipId,TeamId")] ChampionshipTeam championshipTeam)
         {
+            // Chaves compostas => https://www.codeproject.com/Articles/797444/ASP-NET-MVC-Edit-Primary-Key-Values-for-Composite
+
             if (id != championshipTeam.ChampionshipId)
             {
                 return NotFound();
@@ -104,33 +100,33 @@ namespace F1_Project.Controllers
 
             if (ModelState.IsValid)
             {
+                int championshipIdTemp = Convert.ToInt32(championshipTeam.ChampionshipId);
+                int teamIdTemp = Convert.ToInt32(championshipTeam.TeamId);
+
+                var services = _context.ChampionshipTeams.Single(dt => dt.Id == championshipTeam.Id);
+                _context.ChampionshipTeams.Remove(services);
+                _context.ChampionshipTeams.Add(championshipTeam);
                 try
                 {
-                    _context.Update(championshipTeam);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch
                 {
-                    if (!ChampionshipTeamExists(championshipTeam.ChampionshipId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return RedirectToAction("Index");
                 }
-                return RedirectToAction(nameof(Index));
+                _context.Entry(championshipTeam).State = EntityState.Modified;
+                return RedirectToAction("Index");
             }
-            ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Id", championshipTeam.ChampionshipId);
+            
+            ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Year", championshipTeam.ChampionshipId);
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "FullName", championshipTeam.TeamId);
             return View(championshipTeam);
         }
 
         // GET: ChampionshipTeams/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? championshipId, int? teamId)
         {
-            if (id == null)
+            if (championshipId == null || teamId == null)
             {
                 return NotFound();
             }
@@ -138,7 +134,7 @@ namespace F1_Project.Controllers
             var championshipTeam = await _context.ChampionshipTeams
                 .Include(c => c.Championship)
                 .Include(c => c.Team)
-                .FirstOrDefaultAsync(m => m.ChampionshipId == id);
+                .FirstOrDefaultAsync(m => m.ChampionshipId == championshipId && m.TeamId == teamId);
             if (championshipTeam == null)
             {
                 return NotFound();
@@ -150,17 +146,17 @@ namespace F1_Project.Controllers
         // POST: ChampionshipTeams/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int championshipId, int teamId)
         {
-            var championshipTeam = await _context.ChampionshipTeams.FindAsync(id);
+            var championshipTeam = await _context.ChampionshipTeams.FindAsync(championshipId, teamId);
             _context.ChampionshipTeams.Remove(championshipTeam);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ChampionshipTeamExists(int id)
+        private bool ChampionshipTeamExists(int championshipId, int teamId)
         {
-            return _context.ChampionshipTeams.Any(e => e.ChampionshipId == id);
+            return _context.ChampionshipTeams.Any(e => e.ChampionshipId == championshipId && e.TeamId == teamId);
         }
     }
 }

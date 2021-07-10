@@ -51,8 +51,7 @@ namespace F1_Project.Controllers
 
         // GET: DriverTeams/Create
         public IActionResult Create(int? driverId)
-        {
-            
+        {            
             ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "FullName");
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "FullName");
             return View();
@@ -152,9 +151,9 @@ namespace F1_Project.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DriverTeamExists(int id)
+        private bool DriverTeamExists(int teamId, int driverId)
         {
-            return _context.DriverTeams.Any(e => e.DriverId == id);
+            return _context.DriverTeams.Any(e => e.DriverId == driverId && e.TeamId == teamId);
         }
     }
 }

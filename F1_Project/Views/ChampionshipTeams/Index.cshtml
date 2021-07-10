@@ -31,15 +31,15 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Championship.Id)
+                @Html.DisplayFor(modelItem => item.Championship.Year)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Team.FullName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "Edit", new { championshipId = item.ChampionshipId, teamId = item.TeamId }) |
+                <!--@Html.ActionLink("Details", "Details", new { championshipId = item.ChampionshipId, teamId = item.TeamId })-->
+                @Html.ActionLink("Delete", "Delete", new { championshipId = item.ChampionshipId, teamId = item.TeamId })
             </td>
         </tr>
 }
