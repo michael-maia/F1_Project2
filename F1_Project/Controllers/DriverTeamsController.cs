@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using F1_Project.Data;
 using F1_Project.Models;
+using Microsoft.Extensions.Logging;
 
 namespace F1_Project.Controllers
 {
     public class DriverTeamsController : Controller
     {
         private readonly DBContext _context;
+        private readonly ILogger<DriverTeamsController> _logger;
 
-        public DriverTeamsController(DBContext context)
+        public DriverTeamsController(DBContext context ,ILogger<DriverTeamsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: DriverTeams
@@ -47,8 +50,9 @@ namespace F1_Project.Controllers
         }
 
         // GET: DriverTeams/Create
-        public IActionResult Create()
+        public IActionResult Create(int? driverId)
         {
+            
             ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "FullName");
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "FullName");
             return View();
@@ -73,21 +77,24 @@ namespace F1_Project.Controllers
         }
 
         // GET: DriverTeams/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? driverId, int? teamId)
         {
-            if (id == null)
+            DriverTeam driverTeam1 = _context.DriverTeams.Find(driverId, teamId);
+
+            if (driverTeam1 == null)
             {
                 return NotFound();
             }
 
-            var driverTeam = await _context.DriverTeams.FindAsync(id);
+            /*var driverTeam = await _context.DriverTeams.FindAsync(id);
             if (driverTeam == null)
             {
                 return NotFound();
-            }
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "FullName", driverTeam.DriverId);
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "FullName", driverTeam.TeamId);
-            return View(driverTeam);
+            }*/
+            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "FullName", driverTeam1.DriverId);
+            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "FullName", driverTeam1.TeamId);
+
+            return View(driverTeam1);
         }
 
         // POST: DriverTeams/Edit/5
@@ -95,33 +102,29 @@ namespace F1_Project.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,InitialYear,FinalYear,DriverId,TeamId")] DriverTeam driverTeam)
-        {
-            if (id != driverTeam.DriverId)
-            {
-                return NotFound();
-            }
-
+        public IActionResult Edit([Bind("Id,InitialYear,FinalYear,DriverId,TeamId")] DriverTeam driverTeam)
+        {          
             if (ModelState.IsValid)
             {
+                int DriverIdTemp = Convert.ToInt32(driverTeam.DriverId);
+                int TeamIdTemp = Convert.ToInt32(driverTeam.TeamId);
+
+                var services = _context.DriverTeams.Single(dt => dt.Id == driverTeam.Id);                
+                _context.DriverTeams.Remove(services);
+                
+                _context.DriverTeams.Add(driverTeam);
                 try
                 {
-                    _context.Update(driverTeam);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch
                 {
-                    if (!DriverTeamExists(driverTeam.DriverId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return RedirectToAction("Index");
                 }
-                return RedirectToAction(nameof(Index));
+                _context.Entry(driverTeam).State = EntityState.Modified;              
+                return RedirectToAction("Index");
             }
+
             ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "FullName", driverTeam.DriverId);
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "FullName", driverTeam.TeamId);
             return View(driverTeam);
