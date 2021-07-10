@@ -38,7 +38,7 @@ namespace F1_Project.Controllers
             {
                 ViewData["DriverId"] = id.Value;                
                 Driver driver = viewModel.Drivers.Where(d => d.Id == id.Value).Single();
-                viewModel.Teams = driver.DriverTeams.Select(d => d.Team);
+                viewModel.Teams = driver.DriverTeams.Where(d => d.FinalYear == 2021).Select(d => d.Team);
             }
 
             return View(viewModel);
@@ -191,9 +191,12 @@ namespace F1_Project.Controllers
             var driver = await _context.Drivers.FindAsync(id);
 
             string driverPhoto = driver.Photo;
-            driverPhoto = driverPhoto.Replace("~", "wwwroot");
-            System.IO.File.Delete(driverPhoto);
-
+            if(driver.Photo != null)
+            {
+                driverPhoto = driverPhoto.Replace("~", "wwwroot");
+                System.IO.File.Delete(driverPhoto);
+            }          
+            
             _context.Drivers.Remove(driver);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
