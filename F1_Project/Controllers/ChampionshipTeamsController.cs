@@ -73,7 +73,7 @@ namespace F1_Project.Controllers
         }
 
         // GET: ChampionshipTeams/Edit/5
-        public async Task<IActionResult> Edit(int? championshipId, int? teamId)
+        public IActionResult Edit(int? championshipId, int? teamId)
         {
             ChampionshipTeam championshipTeamTemp = _context.ChampionshipTeams.Find(championshipId, teamId);
 

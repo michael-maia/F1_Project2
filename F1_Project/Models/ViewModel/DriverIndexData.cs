@@ -10,5 +10,6 @@ namespace F1_Project.Models.ViewModel
     {
         public IEnumerable<Driver> Drivers { get; set; }
         public IEnumerable<Team> Teams { get; set; }
+        public IEnumerable<Championship> Championships { get; set; }
     }
 }

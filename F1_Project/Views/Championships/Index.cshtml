@@ -1,4 +1,4 @@
-﻿@model IEnumerable<F1_Project.Models.Championship>
+﻿@model F1_Project.Models.ViewModel.DriverIndexData
 
 @{
     ViewData["Title"] = "Index";
@@ -13,16 +13,32 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Year)
+                Year
+            </th>
+            <th>
+                Teams
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+@foreach (var item in Model.Championships)
+{
+    string selectedRow = "";
+    if (item.Id == (int?)ViewData["ChampionshipId"])
+    {
+        selectedRow = "table-sucess";
+    }
+        <tr class="@selectedRow">
             <td>
                 @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @foreach (var team in item.ChampionshipTeams)
+                {
+                    @team.Team.FullName;
+                    @:&#47;
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

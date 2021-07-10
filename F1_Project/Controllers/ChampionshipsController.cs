@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using F1_Project.Data;
 using F1_Project.Models;
+using F1_Project.Models.ViewModel;
 
 namespace F1_Project
 {
@@ -20,9 +21,21 @@ namespace F1_Project
         }
 
         // GET: Championships
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            return View(await _context.Championships.ToListAsync());
+            var viewModel = new DriverIndexData();
+            viewModel.Championships = await _context.Championships
+                .Include(d => d.ChampionshipTeams)
+                    .ThenInclude(d => d.Team)
+                .AsNoTracking().OrderBy(d => d.Year).ToListAsync();
+
+            if (id != null)
+            {
+                ViewData["ChampionshipId"] = id.Value;
+                Championship championship = viewModel.Championships.Where(d => d.Id == id.Value).Single();
+                viewModel.Teams = championship.ChampionshipTeams.Select(d => d.Team);
+            }
+            return View(viewModel);
         }
 
         // GET: Championships/Details/5
