@@ -8,24 +8,24 @@ using Microsoft.EntityFrameworkCore;
 using F1_Project.Data;
 using F1_Project.Models;
 using F1_Project.Models.ViewModel;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace F1_Project.Controllers
 {
     public class DriversController : Controller
     {
-        private readonly DBContext _context;        
+        private readonly DBContext _context;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public DriversController(DBContext context)
+        public DriversController(DBContext context, IWebHostEnvironment hostEnvironment)
         {
-            _context = context;            
-        }               
+            _context = context;
+            _hostEnvironment = hostEnvironment;
+        }
 
-        // GET: Drivers
-        /*public async Task<IActionResult> Index()
-        {
-            var select = _context.Drivers.Include(d => d.DriverTeams).Where()
-            return View(await _context.Drivers.Include(d => d.DriverTeams).ToListAsync());
-        }*/
+        // Explicit Loading => https://docs.microsoft.com/en-us/aspnet/core/data/ef-mvc/read-related-data?view=aspnetcore-5.0#about-explicit-loading
         public async Task<IActionResult> Index(int? id)
         {
             var viewModel = new DriverIndexData();
@@ -73,10 +73,21 @@ namespace F1_Project.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FullName,Nationality,BirthDate,CarNumber,ChampionshipsVictories,RaceVictories,Description,Photo")] Driver driver)
+        public async Task<IActionResult> Create([Bind("Id,FullName,Nationality,BirthDate,CarNumber,ChampionshipsVictories,RaceVictories,Description,Photo")] Driver driver, IFormFile file)
         {
             if (ModelState.IsValid)
             {
+                if(file != null)
+                {
+                    var linkUpload = Path.Combine(_hostEnvironment.WebRootPath, "Images");
+
+                    using (FileStream fileStream = new FileStream(Path.Combine(linkUpload, file.FileName), FileMode.Create))
+                    {                        
+                        await file.CopyToAsync(fileStream);                        
+                        driver.Photo = "~/Images/" + file.FileName;
+                    }
+                }
+
                 _context.Add(driver);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -97,6 +108,8 @@ namespace F1_Project.Controllers
             {
                 return NotFound();
             }
+
+            TempData["DriverPhoto"] = driver.Photo;
             return View(driver);
         }
 
@@ -105,15 +118,32 @@ namespace F1_Project.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Nationality,BirthDate,CarNumber,ChampionshipsVictories,RaceVictories,Description,Photo")] Driver driver)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Nationality,BirthDate,CarNumber,ChampionshipsVictories,RaceVictories,Description,Photo")] Driver driver, IFormFile file)
         {
             if (id != driver.Id)
             {
                 return NotFound();
             }
 
+            driver.Photo = TempData["DriverPhoto"].ToString();
+
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {                    
+                    var linkUpload = Path.Combine(_hostEnvironment.WebRootPath, "Images");
+
+                    using (FileStream fileStream = new FileStream(Path.Combine(linkUpload, file.FileName), FileMode.Create))
+                    {                        
+                        await file.CopyToAsync(fileStream);                        
+                        driver.Photo = "~/Images/" + file.FileName;
+                    }
+                }
+                else
+                {
+                    driver.Photo = TempData["DriverPhoto"].ToString();
+                }
+
                 try
                 {
                     _context.Update(driver);
@@ -159,6 +189,11 @@ namespace F1_Project.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var driver = await _context.Drivers.FindAsync(id);
+
+            string driverPhoto = driver.Photo;
+            driverPhoto = driverPhoto.Replace("~", "wwwroot");
+            System.IO.File.Delete(driverPhoto);
+
             _context.Drivers.Remove(driver);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

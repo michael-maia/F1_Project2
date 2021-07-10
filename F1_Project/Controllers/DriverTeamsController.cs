@@ -57,10 +57,7 @@ namespace F1_Project.Controllers
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "FullName");
             return View();
         }
-
-        // POST: DriverTeams/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,InitialYear,FinalYear,DriverId,TeamId")] DriverTeam driverTeam)
@@ -85,25 +82,19 @@ namespace F1_Project.Controllers
             {
                 return NotFound();
             }
-
-            /*var driverTeam = await _context.DriverTeams.FindAsync(id);
-            if (driverTeam == null)
-            {
-                return NotFound();
-            }*/
+            
             ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "FullName", driverTeam1.DriverId);
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "FullName", driverTeam1.TeamId);
 
             return View(driverTeam1);
         }
-
-        // POST: DriverTeams/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit([Bind("Id,InitialYear,FinalYear,DriverId,TeamId")] DriverTeam driverTeam)
-        {          
+        {
+            // Chaves compostas => https://www.codeproject.com/Articles/797444/ASP-NET-MVC-Edit-Primary-Key-Values-for-Composite
+
             if (ModelState.IsValid)
             {
                 int DriverIdTemp = Convert.ToInt32(driverTeam.DriverId);
