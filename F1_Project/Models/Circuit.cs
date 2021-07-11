@@ -9,10 +9,22 @@ namespace F1_Project.Models
     public class Circuit
     {
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "This field can't be empty")]
+        [StringLength(100, MinimumLength = 5, ErrorMessage = "This field must have more than 5 chars")]
         public string FullName { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "This field cant be less or equal than zero")]
         public int NumberRacesHeld { get; set; }
+
+        [Required]
+        [Range(1, double.MaxValue, ErrorMessage = "This field cant be less or equal than zero")]
         public double CircuitLength { get; set; }
+
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "This field cant be less or equal than zero")]
         public int NumberLaps { get; set; }
+
         [DataType(DataType.Date)]
         public DateTime YearFirstRace { get; set; }
         
@@ -23,6 +35,7 @@ namespace F1_Project.Models
 
         // Chaves estrangeiras
         public ICollection<Round> Rounds { get; set; }
+
         //public int DriverId { get; set; }
         //public Driver DriverMostWins { get; set; }
         //public int TeamId { get; set; }

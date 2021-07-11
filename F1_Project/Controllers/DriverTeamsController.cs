@@ -23,10 +23,19 @@ namespace F1_Project.Controllers
         }
 
         // GET: DriverTeams
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var dBContext = _context.DriverTeams.Include(d => d.Driver).Include(d => d.Team);
-            return View(await dBContext.ToListAsync());
+            if (id != null)
+            {
+                var dBContext = _context.DriverTeams.Include(d => d.Driver).Include(d => d.Team).Where(d => d.DriverId == id.Value);
+                return View(await dBContext.ToListAsync());
+            }
+            else
+            {
+                var dBContext = _context.DriverTeams.Include(d => d.Driver).Include(d => d.Team);
+                return View(await dBContext.ToListAsync());
+            }
+            
         }
 
         // GET: DriverTeams/Details/5

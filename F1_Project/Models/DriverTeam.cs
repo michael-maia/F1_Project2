@@ -10,7 +10,13 @@ namespace F1_Project.Models
     public class DriverTeam
     {
         public int Id { get; set; }
-        public int InitialYear { get; set; }        
+
+        [Required(ErrorMessage = "This field can't be empty")]
+        [Range(1, int.MaxValue, ErrorMessage = "This field cant be less or equal than zero")]
+        public int InitialYear { get; set; }
+
+        [Required(ErrorMessage = "This field can't be empty")]
+        [Range(1, int.MaxValue, ErrorMessage = "This field cant be less or equal than zero")]
         public int FinalYear { get; set; }
 
         // Chaves estrangeiras

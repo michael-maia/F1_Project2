@@ -5,14 +5,11 @@ ViewData["Title"]="Driver Team" ;
 }
 
 <p>
-    <a asp-action="Create">Assign a Driver</a>
+    <a asp-action="Create" class="btn btn-info">Assign a Driver / Team</a>
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
+        <tr>            
             <th>
                 @Html.DisplayNameFor(model => model.InitialYear)
             </th>
@@ -30,10 +27,7 @@ ViewData["Title"]="Driver Team" ;
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
+        <tr>            
             <td>
                 @Html.DisplayFor(modelItem => item.InitialYear)
             </td>
@@ -47,9 +41,8 @@ ViewData["Title"]="Driver Team" ;
                 @Html.DisplayFor(modelItem => item.Team.FullName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { driverId = item.DriverId, teamId = item.TeamId }) |
-                @Html.ActionLink("Details", "Details", new { driverId = item.DriverId, teamId = item.TeamId }) |
-                @Html.ActionLink("Delete", "Delete", new { driverId = item.DriverId, teamId = item.TeamId })
+                <a asp-action="Edit" asp-route-driverid="@item.DriverId" asp-route-teamid="@item.TeamId" class="btn btn-outline-secondary">Edit</a>
+                <a asp-action="Delete" asp-route-driverid="@item.DriverId" asp-route-teamid="@item.TeamId" class="btn btn-outline-danger">Delete</a>                
             </td>
         </tr>
 }

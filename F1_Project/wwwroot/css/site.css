@@ -10,6 +10,10 @@ nav{
     font-family: F1Font;
 }
 
+nav li{
+    margin-right: 20px;
+}
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;
