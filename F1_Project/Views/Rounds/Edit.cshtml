@@ -19,17 +19,17 @@
                 <span asp-validation-for="Number" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ChampionshipId" class="control-label"></label>
+                <label asp-for="ChampionshipId" class="control-label">Championship Year</label>
                 <select asp-for="ChampionshipId" class="form-control" asp-items="ViewBag.ChampionshipId"></select>
                 <span asp-validation-for="ChampionshipId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CircuitId" class="control-label"></label>
+                <label asp-for="CircuitId" class="control-label">Circuit</label>
                 <select asp-for="CircuitId" class="form-control" asp-items="ViewBag.CircuitId"></select>
                 <span asp-validation-for="CircuitId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Update" class="btn btn-primary" />
             </div>
         </form>
     </div>

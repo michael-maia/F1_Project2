@@ -1,12 +1,11 @@
 ﻿@model F1_Project.Models.Round
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "New round";
 }
 
-<h1>Create</h1>
 
-<h4>Round</h4>
+<h4>Add a Round to the F1 calendar</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,11 +17,11 @@
                 <span asp-validation-for="Number" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ChampionshipId" class="control-label"></label>
+                <label asp-for="ChampionshipId" class="control-label">Championship Year</label>
                 <select asp-for="ChampionshipId" class ="form-control" asp-items="ViewBag.ChampionshipId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="CircuitId" class="control-label"></label>
+                <label asp-for="CircuitId" class="control-label">Circuit</label>
                 <select asp-for="CircuitId" class ="form-control" asp-items="ViewBag.CircuitId"></select>
             </div>
             <div class="form-group">

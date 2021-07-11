@@ -49,7 +49,7 @@ namespace F1_Project.Controllers
         // GET: Rounds/Create
         public IActionResult Create()
         {
-            ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Id");
+            ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Year");
             ViewData["CircuitId"] = new SelectList(_context.Circuits, "Id", "FullName");
             return View();
         }
@@ -67,7 +67,7 @@ namespace F1_Project.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Id", round.ChampionshipId);
+            ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Year", round.ChampionshipId);
             ViewData["CircuitId"] = new SelectList(_context.Circuits, "Id", "FullName", round.CircuitId);
             return View(round);
         }
@@ -85,7 +85,7 @@ namespace F1_Project.Controllers
             {
                 return NotFound();
             }
-            ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Id", round.ChampionshipId);
+            ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Year", round.ChampionshipId);
             ViewData["CircuitId"] = new SelectList(_context.Circuits, "Id", "FullName", round.CircuitId);
             return View(round);
         }
@@ -122,7 +122,7 @@ namespace F1_Project.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Id", round.ChampionshipId);
+            ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Year", round.ChampionshipId);
             ViewData["CircuitId"] = new SelectList(_context.Circuits, "Id", "FullName", round.CircuitId);
             return View(round);
         }
