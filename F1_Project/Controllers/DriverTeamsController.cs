@@ -50,8 +50,12 @@ namespace F1_Project.Controllers
         }
 
         // GET: DriverTeams/Create
-        public IActionResult Create(int? driverId)
-        {            
+        public IActionResult Create(int? driverId, int? teamId)
+        {
+            // Como Id não é chave primária, não há auto-incremento
+            IEnumerable<int> ids = _context.DriverTeams.Select(dt => dt.Id).ToList();
+            ViewData["NewId"] = ids.Last() + 1;
+
             ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "FullName");
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "FullName");
             return View();
@@ -65,7 +69,7 @@ namespace F1_Project.Controllers
             {
                 _context.Add(driverTeam);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");                
             }
             ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "FullName", driverTeam.DriverId);
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "FullName", driverTeam.TeamId);

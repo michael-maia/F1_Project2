@@ -33,7 +33,7 @@
     }
         <tr class="@selectedRow">
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.FullName)</a>
+                @Html.DisplayFor(modelItem => item.FullName)                
             </td>                        
             <td>
                 @Html.DisplayFor(modelItem => item.Nationality)
@@ -46,8 +46,8 @@
                 }
             </td>            
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-secondary">Details</a>
+                <a asp-action="Create" asp-route-teamid="@item.Id" asp-controller="DriverTeams" class="btn btn-outline-success">Assign Driver</a>
             </td>
         </tr>
 }

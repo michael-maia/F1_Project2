@@ -32,12 +32,12 @@
                 <span asp-validation-for="CarNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ChampionshipsVictories" class="control-label">Nº of Titles</label>
+                <label asp-for="ChampionshipsVictories" class="control-label">Titles</label>
                 <input asp-for="ChampionshipsVictories" class="form-control" value="0" />
                 <span asp-validation-for="ChampionshipsVictories" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RaceVictories" class="control-label">Nº of Race Victories</label>
+                <label asp-for="RaceVictories" class="control-label">Race Victories</label>
                 <input asp-for="RaceVictories" class="form-control" value="0" />
                 <span asp-validation-for="RaceVictories" class="text-danger"></span>
             </div>
@@ -55,27 +55,24 @@
                 <img src="#" name="file" id="file" height="160" width="240" class="border border-secondary rounded" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Add" class="btn btn-primary" />
+                <input type="submit" value="Add" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">Back</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
-    function LoadImage(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $("#file").attr('src', e.target.result).width(160).height(240);
+    <script>
+        function LoadImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("#file").attr('src', e.target.result).width(160).height(240);
+                }
             }
+            reader.readAsDataURL(input.files[0]);
         }
-        reader.readAsDataURL(input.files[0]);
-    }
-</script>
+    </script>
 }

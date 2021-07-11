@@ -47,8 +47,12 @@ namespace F1_Project.Controllers
         }
 
         // GET: ChampionshipTeams/Create
-        public IActionResult Create()
+        public IActionResult Create(int? championshipId, int? teamId)
         {
+            // Como Id não é chave primária, não há auto-incremento
+            IEnumerable<int> ids = _context.ChampionshipTeams.Select(dt => dt.Id).ToList();
+            ViewData["NewId"] = ids.Last() + 1;
+
             ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Year");
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "FullName");
             return View();
@@ -65,7 +69,7 @@ namespace F1_Project.Controllers
             {
                 _context.Add(championshipTeam);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","Home");
             }
             ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Id", championshipTeam.ChampionshipId);
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "FullName", championshipTeam.TeamId);

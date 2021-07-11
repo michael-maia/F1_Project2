@@ -1,22 +1,16 @@
 ﻿@model F1_Project.Models.DriverTeam
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Assign Driver";
 }
 
-<h1>Create</h1>
-
-<h4>DriverTeam</h4>
+<h4>Assign a Driver</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>          
+            <input asp-for="Id" type="hidden" value="@ViewData["NewId"]"/>               
             <div class="form-group">
                 <label asp-for="InitialYear" class="control-label">Initial Year</label>
                 <input asp-for="InitialYear" class="form-control" />
@@ -28,23 +22,20 @@
                 <span asp-validation-for="FinalYear" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DriverId" class="control-label"></label>
+                <label asp-for="DriverId" class="control-label">Driver</label>
                 <select asp-for="DriverId" class ="form-control" asp-items="ViewBag.DriverId">                        
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="TeamId" class="control-label"></label>
+                <label asp-for="TeamId" class="control-label">Team</label>
                 <select asp-for="TeamId" class ="form-control" asp-items="ViewBag.TeamId"></select>                
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-success" />
+                <a asp-action="Index" asp-controller="Home" class="btn btn-primary">Back</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

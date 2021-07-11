@@ -41,19 +41,20 @@ namespace F1_Project
         // GET: Championships/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            var viewModel = new DriverIndexData();
+            viewModel.Championships = await _context.Championships
+                .Include(d => d.ChampionshipTeams)
+                    .ThenInclude(d => d.Team)
+                .AsNoTracking().OrderBy(d => d.Year).ToListAsync();
+
+            if (id != null)
             {
-                return NotFound();
+                ViewData["ChampionshipId"] = id.Value;
+                Championship championship = viewModel.Championships.Where(d => d.Id == id.Value).Single();
+                viewModel.Teams = championship.ChampionshipTeams.Select(d => d.Team);
             }
 
-            var championship = await _context.Championships
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (championship == null)
-            {
-                return NotFound();
-            }
-
-            return View(championship);
+            return View(viewModel);
         }
 
         // GET: Championships/Create

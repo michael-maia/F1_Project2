@@ -20,10 +20,21 @@ namespace F1_Project.Controllers
         }
 
         // GET: Rounds
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? championshipId)
         {
-            var dBContext = _context.Rounds.Include(r => r.Championship).Include(r => r.Circuit);
-            return View(await dBContext.ToListAsync());
+            ViewData["ChampionshipId"] = championshipId;
+            if(championshipId != null)
+            {
+                // Ordena primeiro pelo Id do campeonato enviado no Details do Championship
+                var dBContext = _context.Rounds.Include(r => r.Championship).Include(r => r.Circuit).Where(r => r.ChampionshipId == championshipId).OrderBy(r => r.Number);                
+                return View(await dBContext.ToListAsync());
+            }
+            else
+            {
+                // Ordena primeiro pelo Year do Championship e depois pelo Number da Round
+                var dBContext = _context.Rounds.Include(r => r.Championship).Include(r => r.Circuit).OrderByDescending(r => r.Championship.Year).ThenBy(r => r.Number);
+                return View(await dBContext.ToListAsync());
+            }          
         }
 
         // GET: Rounds/Details/5
@@ -47,16 +58,13 @@ namespace F1_Project.Controllers
         }
 
         // GET: Rounds/Create
-        public IActionResult Create()
+        public IActionResult Create(int? championshipId)
         {
             ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Year");
             ViewData["CircuitId"] = new SelectList(_context.Circuits, "Id", "FullName");
             return View();
         }
-
-        // POST: Rounds/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Number,ChampionshipId,CircuitId")] Round round)
@@ -65,7 +73,7 @@ namespace F1_Project.Controllers
             {
                 _context.Add(round);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             ViewData["ChampionshipId"] = new SelectList(_context.Championships, "Id", "Year", round.ChampionshipId);
             ViewData["CircuitId"] = new SelectList(_context.Circuits, "Id", "FullName", round.CircuitId);

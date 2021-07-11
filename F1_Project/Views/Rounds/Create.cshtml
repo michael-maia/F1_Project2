@@ -25,14 +25,15 @@
                 <select asp-for="CircuitId" class ="form-control" asp-items="ViewBag.CircuitId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-outline-success" />
+                <a asp-action="Index" asp-controller="Home" class="btn btn-primary">Back</a>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    
 </div>
 
 @section Scripts {
