@@ -6,8 +6,13 @@ for details on configuring this project to bundle and minify static web assets. 
     src: url("https://www.formula1.com/etc/designs/fom-website/fonts/F1Regular/Formula1-Regular.ttf");
 }
 
-nav{
+.nav-color {
     font-family: F1Font;
+    background-color: rgb(241, 0, 0) !important;    
+}
+
+.footer-color {
+    background-color: rgb(241, 0, 0) !important;   
 }
 
 nav li{

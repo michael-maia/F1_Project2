@@ -6,16 +6,10 @@
     <title>@ViewData["Title"] - F1_Project</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <style>
-        font-face {
-            font-family: "F1Font";
-            src: url(https://www.formula1.com/etc/designs/fom-website/fonts/F1Bold/Formula1-Bold.ttf);
-        }
-    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 nav-color">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <picture>                        
@@ -29,16 +23,16 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">                        
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Drivers" asp-action="Index">Drivers</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Drivers" asp-action="Index">Drivers</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Championships" asp-action="Index">Championships</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Championships" asp-action="Index">Championships</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Circuits" asp-action="Index">Circuits</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Circuits" asp-action="Index">Circuits</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Teams" asp-action="Index">Teams</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Teams" asp-action="Index">Teams</a>
                         </li>                     
                     </ul>
                 </div>
@@ -51,8 +45,8 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
+    <footer class="border-top footer text-muted footer-color">
+        <div class="container text-white">
             &copy; 2003-2021 Formula One World Championship Limited
         </div>
     </footer>
