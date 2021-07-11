@@ -6,12 +6,22 @@
     <title>@ViewData["Title"] - F1_Project</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        font-face {
+            font-family: "F1Font";
+            src: url(https://www.formula1.com/etc/designs/fom-website/fonts/F1Bold/Formula1-Bold.ttf);
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">F1_Project</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <picture>                        
+                        <img src="~/Images/f1_logo.jpg" alt="Formula 1" width="100" height="70">
+                    </picture>
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
