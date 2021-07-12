@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,11 +36,10 @@ namespace F1_Project
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+               //app.UseDatabaseErrorPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+            app.UseStatusCodePagesWithReExecute("/Errors/{0}");
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -51,6 +51,22 @@ namespace F1_Project
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            DefaultFilesOptions options = new DefaultFilesOptions();
+            options.DefaultFileNames.Clear();
+            options.DefaultFileNames.Add("/index.html");
+            app.UseDefaultFiles(options);
+
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
+                {
+                    context.Request.Path = "/index.html";
+                    context.Response.StatusCode = 200;
+                    await next();
+                }
             });
         }
     }

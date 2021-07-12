@@ -1,0 +1,27 @@
+﻿@model int
+@{
+    ViewData["Title"] = "Error manager";
+
+    var errorCode = Model;
+    var message = "";
+
+    switch (errorCode)
+    {
+        case 404:
+            message = "Page not found";
+            break;
+
+        case 500:
+            message = "Server error - The server was unable to complete your request";
+            break;
+
+        default:
+            message = "Error - Try again later";
+            break;
+    }
+}
+
+<div class="jumbotron">
+    <h1>Error @errorCode</h1>
+    <h3>@message</h3>
+</div>
