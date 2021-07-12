@@ -40,7 +40,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Nationality)
             </td>                        
-            <td>                
+            <td class="long-text">                
                 @foreach (var team in item.DriverTeams)
                 {
                     @team.Team.FullName;                    

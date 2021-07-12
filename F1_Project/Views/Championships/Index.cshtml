@@ -33,7 +33,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Year)
             </td>
-            <td>
+            <td class="long-text">
                 @foreach (var team in item.ChampionshipTeams)
                 {
                     @team.Team.FullName;
@@ -41,7 +41,8 @@
                 }
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a>                
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a>
+                <a asp-controller="ChampionshipTeams" asp-action="Create" asp-route-championshipid="@item.Id" class="btn btn-outline-success">Assign Team</a>
             </td>
         </tr>
 }

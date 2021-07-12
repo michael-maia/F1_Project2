@@ -23,11 +23,16 @@ namespace F1_Project.Controllers
         }
 
         // GET: DriverTeams
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id, int? teamId)
         {
             if (id != null)
             {
                 var dBContext = _context.DriverTeams.Include(d => d.Driver).Include(d => d.Team).Where(d => d.DriverId == id.Value);
+                return View(await dBContext.ToListAsync());
+            }
+            else if(teamId != null)
+            {
+                var dBContext = _context.DriverTeams.Include(d => d.Driver).Include(d => d.Team).Where(d => d.TeamId == teamId.Value);
                 return View(await dBContext.ToListAsync());
             }
             else
